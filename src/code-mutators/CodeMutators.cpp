@@ -1366,7 +1366,7 @@ extern "C"{
     GrayCCustomRandom::DeleteInstance(Seed);
 
     GrayCCustomRandom::CreateInstance(Seed, 6);
-    const vector<string> no_warning_flag = {"--no-warnings", "-I/usr/lib/clang/18/include/", "-I/usr/local/include/", "-I/usr/include/x86_64-linux-gnu/", "-I/usr/include/"};
+    const vector<string> no_warning_flag = {"--no-warnings", "-x", "c", "-I/usr/lib/clang/18/include/", "-I/usr/local/include/", "-I/usr/include/x86_64-linux-gnu/", "-I/usr/include/"};
     clang::tooling::runToolOnCodeWithArgs(std::make_unique<CodeMutatorsAction>(), data, no_warning_flag);
     GrayCCustomRandom::DeleteInstance(Seed);
 

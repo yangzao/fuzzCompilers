@@ -26,21 +26,18 @@ void func_1(){
     goto label_last;
 
 label_while:
-    ;
     while(i_l == 1){
         s_l = 321;
         i_l++;
         }
   
 label_if: 
-    ;
     if(s_l == 123){
         s_l--;
         l_l++;
         }
 
 label_switch:
-    ;
     switch(i_l){
         case 0:
             i_l = 15;
@@ -57,7 +54,6 @@ label_switch:
     }
     
 label_for:
-    ;
     for (int loop = 0; loop < 111; loop++){
         l_l = 13134243433;
     }
