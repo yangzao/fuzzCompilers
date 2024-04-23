@@ -1,7 +1,7 @@
 import os
 import sys
 from shutil import copyfile
-from post_compilation.utils import status
+from utils import status
 
 def add_headers(filepath, line):
     with open(filepath, 'r+') as f:
@@ -549,7 +549,7 @@ def add_state_tracking(orig_f, state_f, add_libs):
     if (os.path.exists(os.path.join(cwd,"Record-Info.txt"))):
         os.remove(os.path.join(cwd,"Record-Info.txt"))
 
-    ctag_command = os.path.join(cwd, '../post_decompilation/global_extractor/global-extractor')+' '+ os.path.join(file_dir, orig_f)  +' -- --no-warnings ' + add_libs + ' > /dev/null 2>&1'
+    ctag_command = os.path.join(cwd, 'post_compilation/global_extractor/global-extractor')+' '+ os.path.join(file_dir, orig_f)  +' -- --no-warnings ' + add_libs + ' > /dev/null 2>&1'
     os.system (ctag_command)
 
     global_vars_file = os.path.join(cwd,"Global-Info.txt")

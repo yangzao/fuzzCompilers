@@ -5,7 +5,7 @@ from timeout_decorator import timeout
 import shutil
 import time
 
-from post_compilation.utils import *
+from utils import *
 from enhanCer import add_state_tracking
 
 def init(seed):
@@ -28,14 +28,14 @@ def run_state_exec(file_path):
 def post_run():
     ret = 0
     try:
-        ret = post_dec()
+        ret = post_com()
     except Exception as e:
         #print(f"An error occurred in post_dec.py: {e}")
         pass
     return ret
 
 @timeout(50)
-def post_dec():
+def post_com():
 
     csmith = str(os.environ.get('CSMITH_RUNTIME'))
     gnu = " " + str(os.environ.get('GNU'))
@@ -60,7 +60,7 @@ def post_dec():
     src_code = os.path.join(tmp_folder, "src.c")
     state_code = os.path.join(tmp_folder, "state.c")
 
-    shutil.copy2(mutated_code, src_code)
+    shutil.copy2(str(mutated_code), str(src_code))
 
     enhancer_status = add_state_tracking(src_code, state_code, " -I"+csmith+" -I"+gnu)
     if enhancer_status != status.OKAY:
@@ -99,10 +99,16 @@ def post_dec():
             codes[i].exec_result_str = rm_result_mark(codes[i].exec_result.decode())
             codes[i].exec_result_checksum = get_checksum(codes[i].exec_result_str)
         
-    clear_dir(tmp_folder)
     # if there is divergence between the checksums, mark the test case as crash
     if target.exec_result_checksum != second.exec_result_checksum:
         show_divergence_outputs(target.exec_result_str, second.exec_result_str, target.compiler, second.compiler)
+        current_timestamp = str(time.time())
+        save_folder = str(os.environ.get('SAVE_FOLDER')) + current_timestamp
+        save_folder = create_folder_for_program(save_folder)
+        shutil.copy2(state_code, save_folder)
+    
+        clear_dir(tmp_folder)
         return 1
     
+    clear_dir(tmp_folder)
     return 0
